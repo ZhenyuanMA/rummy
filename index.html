@@ -4,9 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="main.css" />
   <title>Play Rummy</title>
 </head>
 <body>
-  
+  <div id="app">
+      <p>Start card set : {{ cards }}</p>
+      <div v-for="player in players">
+        <p>Player {{ player.name }} has card set : {{ player.cards }}</p>
+      </div>
+      <div>
+        {{ log }}
+      </div>
+  </div>
 </body>
+
+<!-- Vue -->
+<script src="vendor/vue.js"></script>
+<script src="vendor/vuex.js"></script>
+<script src="vendor/vue-router.js"></script>
+<!-- Library -->
+<script src="vendor/jquery.js"></script>
+<script src="vendor/lodash.js"></script>
+<script src="vendor/moment.min.js"></script>
+<script src="vendor/jscolor.js"></script>
+<script src="vendor/localforage.min.js"></script>
+<!-- Data -->
+<script src="data.js"></script>
 </html>

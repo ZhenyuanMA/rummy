@@ -1,0 +1,35 @@
+h1 {
+  text-align: center;
+}
+
+#app {
+  margin: 15px;
+}
+
+.select {
+  float: left;
+  width: 33%;
+  text-align: center;
+}
+
+.timeline {
+  position: relative;
+  height: 14px;
+  border-radius: 5px;
+  background: #ccc;
+}
+
+.timeline-inner {
+  position: absolute;
+  height: 14px;
+}
+
+.button {
+  border: 1px solid rgb(0, 0, 0);
+  background-color: #e7e7e7;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 2px 5px 0 rgba(0,0,0,0.19);
+}
+
+.button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 3px 50px 0 rgba(0,0,0,0.19);
+}
