@@ -23,10 +23,10 @@ for (var i = cards.length - 1; i >= 0; i--) {
   cards[randomIndex] = cards[i]
   cards[i] = itemAtIndex
 }
-console.log(`Start card set : ${cards}`)
+console.log(`Start card set : ${print(cards)}`)
 start(cards)
 for (var i = 0; i < 3; i++) {
-  console.log(`Player ${players[i].name} has card set : ${players[i].cards} `)
+  console.log(`Player ${players[i].name} has card set : ${print(players[i].cards)} `)
 }
 play(cards)
 
@@ -51,13 +51,12 @@ function play () {
   }
   if (rummy > 2) {
     console.log(`Game finished! No player wins!`)
-    for (var i = 0; i < 3; i++) {
-      console.log(`Player ${players[i].name} has card set : ${players[i].cards} `)
-    }
   } else {
     console.log(`Game finished! Player ${players[rummy].name} wins!`)
   }
-  
+  for (var i = 0; i < 3; i++) {
+    console.log(`Player ${players[i].name} has card set : ${print(players[i].cards)} `)
+  }
 }
 
 function deal (card, player) {
@@ -108,7 +107,7 @@ function discard (card, player) {
 }
 
 function judge (card, player) {
-  tempCards = player.cards
+  var tempCards = [].concat(player.cards);
   tempCards.push(card)
   tempCards.sort(function (a,b) {
     return (a - b)
@@ -116,13 +115,17 @@ function judge (card, player) {
 
   // set judge
   for (var i = 0; i < tempCards.length - 2; i++) {
-    if (parseInt(tempCards[i] / 4, 10) == parseInt(tempCards[i + 1] / 4, 10) / 4 == parseInt(tempCards[i + 2] / 4, 10) / 4) {
+    if ((parseInt(tempCards[i] / 4, 10) == parseInt(tempCards[i + 1] / 4, 10)) && (parseInt(tempCards[i + 1] / 4, 10) == parseInt(tempCards[i + 2] / 4, 10))) {
       tempCards.splice(i, 3)
     }
   }
 
   // run judge
-  var array = new Array(13).fill(new Array(4).fill(-1))
+  var array = []
+  for (var i = 0; i < 13; i++) {
+    var n = new Array(4).fill(-1)
+    array.push(n)
+  }
   var num = new Array(13).fill(0)
   for (var i = 0; i < tempCards.length; i++) {
     array[parseInt(tempCards[i] / 4, 10)][tempCards[i] % 4] = i
@@ -130,7 +133,7 @@ function judge (card, player) {
   for (var i = 0; i < array.length; i++) {
     var count = 0
     for (var j = 0; j < array[i].length; j++) {
-      if (array[i][j] != -1) {
+      if (array[i][j] >= 0) {
         count++
       }
     }
@@ -140,24 +143,24 @@ function judge (card, player) {
     if (num[i] > 0 && num[i + 1] > 0 && num[i + 2] > 0) {
       for (var j = 0; j < array[i].length; j++) {
         if (array[i][j] != -1) {
-          array[i][j] = -1
           delete tempCards[array[i][j]]
+          array[i][j] = -1
           num[i]--
           break
         }
       }
       for (var j = 0; j < array[i + 1].length; j++) {
         if (array[i + 1][j] != -1) {
-          array[i + 1][j] = -1
           delete tempCards[array[i + 1][j]]
+          array[i + 1][j] = -1
           num[i + 1]--
           break
         }
       }
       for (var j = 0; j < array[i + 2].length; j++) {
         if (array[i + 2][j] != -1) {
-          array[i + 2][j] = -1
           delete tempCards[array[i + 2][j]]
+          array[i + 2][j] = -1
           num[i + 2]--
           break
         }
@@ -171,17 +174,25 @@ function judge (card, player) {
       temp.push(tempCards[i])
     }
   }
-  tempCards = temp
+  tempCards = [].concat(temp)
 
   if (tempCards.length == 0) {
     rummy = player.id
     return null
   } else {
     var dis = parseInt(Math.random() * tempCards.length, 10)
-    if (player.cards.includes(dis)) {
-      player.cards.splice(player.cards.indexOf(dis), 1)
+    if (player.cards.includes(tempCards[dis])) {
+      player.cards.splice(player.cards.indexOf(tempCards[dis]), 1)
       player.cards.push(card)
     }
     return tempCards[dis]
   }
+}
+
+function print (cSet) {
+  var string = ""
+  for (var i = 0; i < cSet.length; i++) {
+    string += cardset[cSet[i]] + " "
+  }
+  return string
 }
